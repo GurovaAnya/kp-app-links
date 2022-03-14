@@ -37,8 +37,7 @@ class Lemmer():
         return tokens_norm
 
     def find_words(self, keywords):
-        print(len(self.lemmed_indexes), len(self.text_indexes))
-        print(self.text_indexes)
+
         for (i, keyword) in enumerate(keywords):
             iteration = re.finditer(keyword, self.lemmed_string)
             for match in iteration:
@@ -52,5 +51,7 @@ class Lemmer():
                 end = self.text_indexes[end_token_number][1]
 
                 match_orig = self.text[start: end]
+
+                print(match.groupdict())
                 yield TokenMatch(start, end, match_orig, match.group(0))
 

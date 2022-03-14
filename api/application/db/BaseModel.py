@@ -12,6 +12,8 @@ class Document(BaseModel):
     name = TextField(column_name="name")
     type = TextField(column_name="type")
     number = TextField(column_name="number")
+    authority = TextField(column_name="authority")
+    date = TextField(column_name="date")
 
     class Meta:
         table_name = 'document'
@@ -21,6 +23,8 @@ class Document(BaseModel):
 class Link(BaseModel):
     parent_id = ForeignKeyField(column_name="parent_id", model=Document)
     child_id = ForeignKeyField(column_name="child_id", model=Document)
+    start_index = IntegerField(column_name="start_index")
+    end_index = IntegerField(column_name="end_index")
 
     class Meta:
         table_name = 'links'
@@ -29,15 +33,15 @@ class Link(BaseModel):
 def initialize_db():
     conn.connect()
     conn.create_tables([Document, Link], safe=True)
-    add_data()
+    # add_data()
     conn.close()
 
 
-def add_data():
-    Document(name='Закон 1', type='закон', number='1').save()
-    Document(name='Закон 2', type='закон', number='2g').save()
-
-    Link(parent_id='1', child_id='2').save()
+# def add_data():
+#     Document(name='Закон 1', type='закон', number='1').save()
+#     Document(name='Закон 2', type='закон', number='2g').save()
+#
+#     Link(parent_id='1', child_id='2').save()
 
 
 
