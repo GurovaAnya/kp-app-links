@@ -1,8 +1,8 @@
-import time
 from flask import Flask
 from flask import request
 from application.services.lemmer import Lemmer
 from application.utils.json_transformer import JsonTransformer
+from application.repositories.relations import RelationsRepository
 
 
 app = Flask(__name__)
@@ -13,7 +13,7 @@ def lem():
     lemmer = Lemmer(text)
     lemmed = lemmer.get_lemmed_string()
     setting_file = open('settings/patters.txt', 'r')
-    patterns = setting_file.readlines();
+    patterns = setting_file.readlines()
     matched = list(lemmer.find_words(patterns))
 
     result = {
@@ -39,5 +39,17 @@ def map():
             {'data': {'source': "j", 'target': "g"}},
             {'data': {'source': "e", 'target': "j"}}
         ]
+    }
+    return JsonTransformer().transform(DAG)
+
+
+@app.route('/test')
+def test():
+    repo = RelationsRepository()
+    documents = repo.get_all_documents()
+    links = repo.get_all_links()
+    DAG = {
+        "nodes": documents,
+        "edges": links
     }
     return JsonTransformer().transform(DAG)
