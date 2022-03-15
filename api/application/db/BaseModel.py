@@ -14,6 +14,7 @@ class Document(BaseModel):
     number = TextField(column_name="number")
     authority = TextField(column_name="authority")
     date = TextField(column_name="date")
+    text = TextField(column_name='text')
 
     class Meta:
         table_name = 'document'
