@@ -12,7 +12,6 @@ export function Graph(){
     let mounted = true;
     fetch('http://localhost:3000/test').then(data => data.json()).then(items => {
       if (mounted){
-        console.log(items)
         setGraph(items);
       }
     })
@@ -46,6 +45,6 @@ export function Graph(){
   }, [graph]);
 
   return (
-      <div className="app-body-section app-main-section flex-direction-column" ref={cyto} />
+      <div className="graph" ref={cyto}/>
   );
 }
