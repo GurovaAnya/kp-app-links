@@ -1,12 +1,16 @@
 import './App.css';
-import {Graph} from "./Graph";
-import Header from "./Header/Header"
+import Header from "./Header"
+import RoutesLocal from "./RoutesLocal";
+import MainPage from "./MainPage";
 
 function App() {
   return (
     <div className="App">
         <Header/>
-        <Graph/>
+        <RoutesLocal>
+           <MainPage/>
+        </RoutesLocal>
+
     </div>
   );
 }
