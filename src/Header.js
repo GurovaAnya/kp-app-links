@@ -7,9 +7,6 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
 import AddIcon from '@mui/icons-material/Add';
-import {
-    Dialog,
-} from "@mui/material";
 import AddTextDialog from "./AddTextDialog";
 
 
@@ -48,13 +45,11 @@ export default function Header() {
                 />
             </Toolbar>
 
-            <Dialog
-                open={isAddModalShown}
+
+            <AddTextDialog
                 onClose={() => setAddModalShown(false)}
-                style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
-            >
-                <AddTextDialog/>
-            </Dialog>
+                isOpen={isAddModalShown}
+            />
         </AppBar>
     );
 }

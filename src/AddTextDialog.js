@@ -1,16 +1,38 @@
-import React from "react";
+import React, {useState} from "react";
 import {DialogContent, DialogTitle, TextField} from "@mui/material";
 import Button from "@mui/material/Button";
 
-const AddTextDialog = () => (
+const AddTextDialog = (props) => {
+    const [title, setTitle] = useState("");
+    const [text, setText] = useState("");
 
-    <>
-        <DialogTitle>
-            Добавить текст законодательного акта
-        </DialogTitle>
-        <DialogContent>
-            <form noValidate>
+    const handleSubmit = () => {
+        fetch('/api/document', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                full_name: title,
+                text: text
+            })
+        })
+            .catch(error => alert(error))
+            .then(r => props.onClose())
+    }
 
+    return (
+        <Dialog
+                open={props.isOpen}
+                onClose={props.onClose}
+                style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
+            >
+            <DialogTitle>
+                Добавить текст законодательного акта
+            </DialogTitle>
+
+            <DialogContent>
                 <TextField
                     variant="outlined"
                     margin="normal"
@@ -20,6 +42,8 @@ const AddTextDialog = () => (
                     label="Полное название законодательного акта"
                     name="full_text"
                     autoFocus
+                    value={title}
+                    onChange={(event) => setTitle(event.target.value)}
                 />
 
                 <TextField
@@ -31,19 +55,23 @@ const AddTextDialog = () => (
                     name="text"
                     label="Текст законодательного акта"
                     id="text"
+                    value={text}
+                    onChange={(event) => setText(event.target.value)}
                 />
 
 
-                <Button type="submit"
-                        fullWidth variant="contained"
-                        color="primary">
-                    Sign In
+                <Button
+                    fullWidth variant="contained"
+                    color="primary"
+                    onClick={handleSubmit}
+                >
+                    Сохранить
                 </Button>
 
-            </form>
-        </DialogContent>
-    </>
+            </DialogContent>
+        </Dialog>
 
-);
+    );
+}
 
 export default AddTextDialog;

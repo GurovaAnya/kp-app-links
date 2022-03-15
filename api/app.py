@@ -10,7 +10,7 @@ from flask import Response
 app = Flask(__name__)
 
 
-@app.route('api/document', methods=['POST'])
+@app.route('/api/document', methods=['POST'])
 def add_document():
     repo = RelationsRepository()
     document_request = request.json
@@ -35,7 +35,7 @@ def add_document():
     return Response(status=201)
 
 
-@app.route('api/lem/<int:text_id>')
+@app.route('/api/lem/<int:text_id>')
 def lem(text_id):
     repo = RelationsRepository()
     text = repo.get_document_by_id(text_id).text
@@ -59,7 +59,7 @@ def lem(text_id):
     return JsonTransformer().transform(result)
 
 
-@app.route('api/map')
+@app.route('/api/map')
 def map():
     DAG = {
         'nodes': [
@@ -78,7 +78,7 @@ def map():
     return JsonTransformer().transform(DAG)
 
 
-@app.route('api/test')
+@app.route('/api/test')
 def test():
     repo = RelationsRepository()
     documents = repo.get_all_documents()
