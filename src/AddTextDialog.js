@@ -1,13 +1,12 @@
 import React, {useState} from "react";
-import {DialogContent, DialogTitle, TextField} from "@mui/material";
-import Button from "@mui/material/Button";
+import {DialogContent, DialogTitle, TextField, Dialog, Button} from "@mui/material";
 
 const AddTextDialog = (props) => {
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
 
     const handleSubmit = () => {
-        fetch('/api/document', {
+        fetch('/api/save_and_lem', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -62,8 +61,8 @@ const AddTextDialog = (props) => {
 
                 <Button
                     fullWidth variant="contained"
-                    color="primary"
                     onClick={handleSubmit}
+                    sx={{backgroundColor: "#00d2ca"}}
                 >
                     Сохранить
                 </Button>

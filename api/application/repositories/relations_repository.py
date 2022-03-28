@@ -1,5 +1,5 @@
 from ..db.BaseModel import Link, Document
-from ..models.edge import Mapper
+from ..models.mapper import Mapper
 
 
 class RelationsRepository:

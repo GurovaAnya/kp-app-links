@@ -10,7 +10,7 @@ export function Graph(){
 
   useEffect(() => {
     let mounted = true;
-    fetch('http://localhost:3000/test').then(data => data.json()).then(items => {
+    fetch('api/test').then(data => data.json()).then(items => {
       if (mounted){
         setGraph(items);
       }

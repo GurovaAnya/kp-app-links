@@ -10,12 +10,12 @@ import AddIcon from '@mui/icons-material/Add';
 import AddTextDialog from "./AddTextDialog";
 
 
-export default function Header() {
+const Header = () => {
 
     const [isAddModalShown, setAddModalShown] = useState(false);
 
     return (
-        <AppBar position="static">
+        <AppBar position="static" sx={{backgroundColor:"#00d2ca"}}>
             <Toolbar>
                 <IconButton
                     size="large"
@@ -53,3 +53,5 @@ export default function Header() {
         </AppBar>
     );
 }
+
+export default Header;

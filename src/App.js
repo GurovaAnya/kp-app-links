@@ -3,8 +3,7 @@ import Header from "./Header"
 import RoutesLocal from "./RoutesLocal";
 import MainPage from "./MainPage";
 
-function App() {
-  return (
+const App = () => (
     <div className="App">
         <Header/>
         <RoutesLocal>
@@ -12,7 +11,6 @@ function App() {
         </RoutesLocal>
 
     </div>
-  );
-}
+)
 
 export default App;

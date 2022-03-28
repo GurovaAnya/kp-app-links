@@ -1,86 +1,61 @@
 from flask import Flask
 from flask import request
-from application.services.lemmer import Lemmer
+
+from application.services.document_service import DocumentService
 from application.utils.json_transformer import JsonTransformer
 from application.repositories.relations_repository import RelationsRepository
-from application.db.BaseModel import Link, Document
-from flask import Response
 
 
 app = Flask(__name__)
 
+repo = RelationsRepository()
+document_service = DocumentService()
+setting_file = open('settings/patters.txt', 'r')
+patterns = setting_file.readlines()
 
 @app.route('/api/document', methods=['POST'])
 def add_document():
-    repo = RelationsRepository()
     document_request = request.json
-    lemmer = Lemmer(document_request["full_name"])
-    lemmed = lemmer.get_lemmed_string()
-    print(lemmer.text)
-    setting_file = open('settings/patters.txt', 'r')
-    patterns = setting_file.readlines()
-    matched = list(lemmer.find_words(patterns))
-    print(matched)
-    first_match = matched[0]
-    doc = Document(name=document_request["full_name"],
-                   number=first_match.number,
-                   date=first_match.date,
-                   authority=first_match.authority,
-                   type=first_match.type,
-                   text=document_request["text"]
-                   )
-
-    repo.save_doc(doc)
-
-    return Response(status=201)
+    doc = document_service.extract_doc_from_title(document_request["full_name"], document_request["text"], patterns)
+    doc = repo.save_doc(doc)
+    return JsonTransformer().transform(doc)
 
 
 @app.route('/api/lem/<int:text_id>')
 def lem(text_id):
-    repo = RelationsRepository()
     text = repo.get_document_by_id(text_id).text
-    print(text)
-    lemmer = Lemmer(text)
-    lemmed = lemmer.get_lemmed_string()
-    setting_file = open('settings/patters.txt', 'r')
-    patterns = setting_file.readlines()
-    matched = list(lemmer.find_words(patterns))
+    lemmer = document_service.lem_text(text)
+    matched = document_service.find_links_in_lemed_text(lemmer, patterns)
 
     result = {
-        "lemmed": lemmed,
+        "lemmed": lemmer.lemmed_string,
         "matched": matched
     }
 
-    for link in matched:
-        child_doc = repo.find_document_by_params(doc_type=link.type, authority=link.authority, number=link.number, date=link.date)
-        db_link = Link(parent_id=text_id, child_id=child_doc.id, start_index=link.start_index, end_index=link.end_index)
-        repo.save_link(db_link)
+    document_service.save_matched_links(matched, text_id)
 
     return JsonTransformer().transform(result)
 
 
-@app.route('/api/map')
-def map():
-    DAG = {
-        'nodes': [
-            {'data': {"id": "j", 'name': "Закон 1"}},
-            {'data': {"id": "e", 'name': "Закон 2"}},
-            {'data': {"id": "k", 'name': "Закон 3"}},
-            {'data': {"id": "g", 'name': "Закон 4"}}
-        ],
-        'edges': [
-            {'data': {'source': "j", 'target': "e"}},
-            {'data': {'source': "j", 'target': "k"}},
-            {'data': {'source': "j", 'target': "g"}},
-            {'data': {'source': "e", 'target': "j"}}
-        ]
+@app.route('/api/save_and_lem', methods=['POST'])
+def save_and_lem():
+    document_request = request.json
+    doc = document_service.extract_doc_from_title(document_request["full_name"], document_request["text"], patterns)
+    repo.save_doc(doc)
+    lemmer = document_service.lem_text(document_request["text"])
+    matched = document_service.find_links_in_lemed_text(lemmer, patterns)
+
+    result = {
+        "lemmed": lemmer.lemmed_string,
+        "matched": matched
     }
-    return JsonTransformer().transform(DAG)
+
+    document_service.save_matched_links(matched, doc)
+    return JsonTransformer().transform(result)
 
 
 @app.route('/api/test')
 def test():
-    repo = RelationsRepository()
     documents = repo.get_all_documents()
     links = repo.get_all_links()
     DAG = {
