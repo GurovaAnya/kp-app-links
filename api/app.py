@@ -56,10 +56,89 @@ def save_and_lem():
 
 @app.route('/api/nodes')
 def nodes_nice():
-    documents = repo.get_all_documents()
-    links = repo.get_all_links()
+    documents = get_all_documents()
+    links = get_all_links()
     DAG = {
         "nodes": documents,
         "edges": links
     }
     return JsonTransformer().transform(DAG)
+
+
+def get_all_documents():
+    return [
+        {
+            'data':
+                {
+                    "id": 1,
+                    'name': "Постановление Правительства российской федерации от 31 декабря 2021 г. № 2611"
+                }
+        },
+        {
+            'data':
+                {
+                    'id': 2,
+                    'name': 'Постановление Правительства РФ от 10 февраля 2021 г. N 147'
+                }
+        },
+        {
+            'data':
+                {
+                    'id': 3,
+                    'name': 'Постановление Правительства РФ от 10 марта 2020 г. N 263'
+                }
+        },
+        {
+            'data':
+                {
+                    'id': 4,
+                    'name': 'Статья 214 ГК РФ'
+                }
+        },
+        {
+            'data':
+                {
+                    'id': 5,
+                    'name': 'Статья 215 ГК РФ'
+                }
+        },
+        {
+            'data':
+                {
+                    'id': 6,
+                    'name': 'Статья 9 ТК РФ'
+                }
+        },
+        {
+            'data':
+                {
+                    'id': 7,
+                    'name': 'Статья 125 ГК РФ'
+                }
+        }
+    ]
+
+def get_all_links():
+    return [
+        {
+            'data':
+                {
+                    "source": 1,
+                    "target": 2
+                }
+        },
+        {
+            'data':
+                {
+                    "source": 2,
+                    "target": 3
+                }
+        },
+        {
+            'data':
+                {
+                    "source": 4,
+                    "target": 7
+                }
+        }
+    ]
