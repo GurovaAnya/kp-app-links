@@ -54,8 +54,8 @@ def save_and_lem():
     return JsonTransformer().transform(result)
 
 
-@app.route('/api/test')
-def test():
+@app.route('/api/nodes')
+def nodes_nice():
     documents = repo.get_all_documents()
     links = repo.get_all_links()
     DAG = {
