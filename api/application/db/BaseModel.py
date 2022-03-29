@@ -31,18 +31,11 @@ class Link(BaseModel):
         table_name = 'links'
 
 
-def initialize_db():
-    conn.connect()
-    conn.create_tables([Document, Link], safe=True)
-    # add_data()
-    conn.close()
+# def initialize_db():
+#     conn.connect()
+#     conn.create_tables([Document, Link], safe=True)
+#     conn.close()
 
-
-# def add_data():
-#     Document(name='Закон 1', type='закон', number='1').save()
-#     Document(name='Закон 2', type='закон', number='2g').save()
-#
-#     Link(parent_id='1', child_id='2').save()
 
 
 
