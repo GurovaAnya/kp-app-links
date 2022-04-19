@@ -1,6 +1,11 @@
-from peewee import *
+import os
 
-conn = SqliteDatabase('kp.sqlite')
+from peewee import *
+from playhouse.db_url import connect
+
+link = os.environ['LINKSDB']
+conn = connect(link)
+
 
 class BaseModel(Model):
     class Meta:
@@ -18,7 +23,6 @@ class Document(BaseModel):
 
     class Meta:
         table_name = 'document'
-        database = conn
 
 
 class Link(BaseModel):
@@ -37,12 +41,6 @@ def initialize_db():
     # add_data()
     conn.close()
 
-
-# def add_data():
-#     Document(name='Закон 1', type='закон', number='1').save()
-#     Document(name='Закон 2', type='закон', number='2g').save()
-#
-#     Link(parent_id='1', child_id='2').save()
 
 
 
