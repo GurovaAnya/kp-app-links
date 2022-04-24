@@ -13,7 +13,7 @@ const RoutesLocal = () => (
     <Router>
         <Routes>
             <Route path="/document/:id" element={<DocumentInfo/>}/>
-            <Route path="/main" element={<MainPage/>}/>
+            <Route path="/" element={<MainPage/>}/>
         </Routes>
     </Router>
 );
