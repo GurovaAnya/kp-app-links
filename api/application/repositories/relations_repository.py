@@ -25,6 +25,11 @@ class RelationsRepository:
     def save_link(self, link: Link):
         return link.save()
 
+    def save_if_not_exists(self, link: Link):
+        existing = self.link.get_or_none(Link.parent_id == link.parent_id, Link.child_id == link.child_id)
+        if existing is None:
+            link.save()
+
     def save_doc(self, doc: Document):
         return doc.save()
 

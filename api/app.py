@@ -107,4 +107,5 @@ def tt():
     result = ontology_extractor.extact_links_from_owl(file)
     docs = links_analyser.save_new_docs(result)
     links = links_analyser.map_links_to_docs(result, docs)
+    links_analyser.save_links(links)
     return JsonTransformer().transform(links)

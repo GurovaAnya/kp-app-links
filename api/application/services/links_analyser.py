@@ -25,7 +25,7 @@ class LinksAnalyser:
 
         return docs_with_ids
 
-    def map_links_to_docs(self, links_data: ExtractionResult, list_of_docs: dict[str, Document]):
+    def map_links_to_docs(self, links_data: ExtractionResult, list_of_docs: dict[str, Document]) -> list[Link]:
         links = links_data.links
         link_models = []
         for link in links:
@@ -37,3 +37,7 @@ class LinksAnalyser:
             link_models.append(link_model)
 
         return link_models
+
+    def save_links(self, links: list[Link]):
+        for link in links:
+            relations_repository.save_if_not_exists(link)
