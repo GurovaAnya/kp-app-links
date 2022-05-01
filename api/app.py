@@ -1,13 +1,12 @@
-from flask import Flask, request, flash, redirect, url_for, Response
-from werkzeug.utils import secure_filename
-from flask_cors import CORS
-import os
+from io import StringIO
 
-from application.services.document_service import DocumentService
-from application.utils.json_transformer import JsonTransformer
+from flask import Flask, request, Response
+from flask_cors import CORS
+
 from application.repositories.relations_repository import RelationsRepository
-from application.services.ontology_extractor import OntologyExtractor
-from application.services.links_analyser import LinksAnalyser
+from application.services.document_service import DocumentService
+from application.services.ontology_service import OntologyService
+from application.utils.json_transformer import JsonTransformer
 
 app = Flask(__name__)
 app.secret_key = "super secret key"
@@ -15,8 +14,7 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 repo = RelationsRepository()
-ontology_extractor = OntologyExtractor()
-links_analyser = LinksAnalyser()
+ontology_service = OntologyService()
 document_service = DocumentService()
 setting_file = open('settings/patters.txt', 'r')
 patterns = setting_file.readlines()
@@ -77,11 +75,10 @@ def nodes_nice():
 @app.route('/api/save_file', methods=['POST'])
 def get_documents():
     document_request = request.json
-    root = document_request["text"]
-    filename = secure_filename(document_request["full_name"])
-    path = os.path.join(os.environ['UPLOAD_FOLDER'], filename)
-    myfile = open(path, "x")
-    myfile.write(document_request["text"])
+    text = document_request["text"]
+    file = StringIO(text)
+    file.name = 'file.xml'
+    result = ontology_service.extract_from_file(file)
     return Response(status=200)
     # print(request.data)
     # if 'file' not in request.files:
@@ -104,8 +101,5 @@ def get_documents():
 @app.route("/api/tt", methods=['POST'])
 def tt():
     file = request.files['file']
-    result = ontology_extractor.extact_links_from_owl(file)
-    docs = links_analyser.save_new_docs(result)
-    links = links_analyser.map_links_to_docs(result, docs)
-    links_analyser.save_links(links)
-    return JsonTransformer().transform(links)
+    result = ontology_service.extract_from_file(file)
+    return JsonTransformer().transform(result)

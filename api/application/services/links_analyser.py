@@ -14,7 +14,7 @@ class LinksAnalyser:
         docs_with_ids: dict[str, Document] = {}
         documents: dict[str, ExtractedDocument] = links_data.documents
         for document in documents.values():
-            existing_doc = relations_repository.find_document_by_number_and_date(document.number, document.date)
+            existing_doc = relations_repository.find_document_by_number_date_type(document.number, document.date, document.type)
             doc_id: int
             if existing_doc is None:
                 document_model = Mapper.map_doc_to_model(document)
