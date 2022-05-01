@@ -19,6 +19,9 @@ class RelationsRepository:
         return self.document.get(Document.type == doc_type and Document.date == date
                                  and Document.authority == authority and Document.number == number)
 
+    def find_document_by_number_and_date(self, number, date) -> Document:
+        return self.document.get_or_none(Document.number == number, Document.date == date)
+
     def save_link(self, link: Link):
         return link.save()
 

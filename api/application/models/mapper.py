@@ -1,3 +1,7 @@
+from ..services.extracted_document import ExtractedDocument
+from ..db.BaseModel import Document
+
+
 class Mapper:
 
     @staticmethod
@@ -20,3 +24,11 @@ class Mapper:
                 }
 
         }
+
+    @staticmethod
+    def map_doc_to_model(extracted_document: ExtractedDocument) -> Document:
+        return Document(
+            name=extracted_document.name,
+            number=extracted_document.number,
+            date=extracted_document.date
+        )
