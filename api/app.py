@@ -74,28 +74,22 @@ def nodes_nice():
 
 @app.route('/api/save_file', methods=['POST'])
 def get_documents():
+    if 'file' not in request.files:
+        print('No file part')
+        return Response(status=401)
+    file = request.files['file']
+    ontology_service.extract_from_file(file)
+    return Response(status=200)
+
+
+@app.route("/api/ont_from_text", methods=['POST'])
+def ont_from_text():
     document_request = request.json
     text = document_request["text"]
     file = StringIO(text)
     file.name = 'file.xml'
     result = ontology_service.extract_from_file(file)
     return Response(status=200)
-    # print(request.data)
-    # if 'file' not in request.files:
-    #     print('No file part')
-    #     return Response(status=401)
-    #     # return redirect(request.url)
-    # file = request.files['file']
-    # print(file)
-    # if file.filename == '':
-    #     print('No selected file')
-    #     return Response(status=401)
-    #     # return redirect(request.url)
-    # # if file and allowed_file(file.filename):
-    # filename = secure_filename(file.filename)
-    # file.save(os.path.join(os.environ['UPLOAD_FOLDER'], filename))
-    # return Response(status=200)
-    #     #redirect(url_for('download_file', name=filename))
 
 
 @app.route("/api/tt", methods=['POST'])
