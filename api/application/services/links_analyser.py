@@ -3,7 +3,8 @@ from .extracted_document import ExtractedDocument
 from .extraction_result import ExtractionResult
 from ..repositories.relations_repository import RelationsRepository
 from ..models.mapper import Mapper
-from ..db.BaseModel import Link, Document
+from ..db.link import Link
+from ..db.document import Document
 
 relations_repository = RelationsRepository()
 

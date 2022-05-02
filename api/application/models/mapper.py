@@ -1,5 +1,5 @@
 from ..services.extracted_document import ExtractedDocument
-from ..db.BaseModel import Document
+from ..db.document import Document
 
 
 class Mapper:

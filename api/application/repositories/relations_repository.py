@@ -1,4 +1,5 @@
-from ..db.BaseModel import Link, Document
+from ..db.link import Link
+from ..db.document import Document
 from ..models.mapper import Mapper
 
 

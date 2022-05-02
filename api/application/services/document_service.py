@@ -1,4 +1,5 @@
-from ..db.BaseModel import Document, Link
+from ..db.link import Link
+from ..db.document import Document
 from ..repositories.relations_repository import RelationsRepository
 from ..services.lemmer import Lemmer
 
