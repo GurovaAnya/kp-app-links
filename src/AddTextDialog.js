@@ -1,24 +1,40 @@
 import React, {useState} from "react";
 import {DialogContent, DialogTitle, TextField, Dialog, Button} from "@mui/material";
+import axios from "axios";
 
 const AddTextDialog = (props) => {
-    const [title, setTitle] = useState("");
     const [text, setText] = useState("");
+    const [file, setFile] = useState(File.prototype);
 
     const handleSubmit = () => {
-        fetch('/api/save_and_lem', {
+        fetch('/api/ont_from_text', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                full_name: title,
                 text: text
             })
         })
             .catch(error => alert(error))
             .then(r => props.onClose())
+    }
+
+    const handleDocumentLoad = (e) => {
+        const formData = new FormData();
+        console.log(file);
+
+		// formData.append('file', e.target.files[0]);
+        formData.append('file', file);
+        const config = {
+            headers: {
+                'Accept': '*/*',
+                'Content-Type': 'multipart/form-data',
+            }
+        }
+        axios.post("/api/save_file", formData,config)
+                    .then(r => props.onClose());
     }
 
     return (
@@ -28,23 +44,9 @@ const AddTextDialog = (props) => {
                 style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
             >
             <DialogTitle>
-                Добавить текст законодательного акта
+                Добавить онтологию
             </DialogTitle>
-
             <DialogContent>
-                <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="full_text"
-                    label="Полное название законодательного акта"
-                    name="full_text"
-                    autoFocus
-                    value={title}
-                    onChange={(event) => setTitle(event.target.value)}
-                />
-
                 <TextField
                     variant="outlined"
                     margin="normal"
@@ -52,7 +54,7 @@ const AddTextDialog = (props) => {
                     fullWidth
                     multiline
                     name="text"
-                    label="Текст законодательного акта"
+                    label="Онтология в формате owl"
                     id="text"
                     value={text}
                     onChange={(event) => setText(event.target.value)}
@@ -61,11 +63,25 @@ const AddTextDialog = (props) => {
 
                 <Button
                     fullWidth variant="contained"
-                    onClick={handleSubmit}
+                    onClick={handleDocumentLoad}
                     sx={{backgroundColor: "#00d2ca"}}
                 >
                     Сохранить
                 </Button>
+
+                <input
+                    // accept=".owl"
+                    // style={{ display: 'none' }}
+                    id="raised-button-file"
+                    type="file"
+                    // name="file"
+                    onChange={(e) => setFile(e.target.files[0])}
+                />
+                <label htmlFor="raised-button-file">
+                    <Button variant="raised" component="span">
+                        Upload
+                    </Button>
+                </label>
 
             </DialogContent>
         </Dialog>

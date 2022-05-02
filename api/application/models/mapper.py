@@ -30,5 +30,6 @@ class Mapper:
         return Document(
             name=extracted_document.name,
             number=extracted_document.number,
-            date=extracted_document.date
+            date=extracted_document.date,
+            type=extracted_document.type
         )
