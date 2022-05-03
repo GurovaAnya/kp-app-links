@@ -1,7 +1,7 @@
 from peewee import ForeignKeyField, IntegerField
 
-from api.application.db.base_model import BaseModel
-from api.application.db.document import Document
+from ..db.base_model import BaseModel
+from ..db.document import Document
 
 
 class Link(BaseModel):

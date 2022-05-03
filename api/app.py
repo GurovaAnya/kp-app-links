@@ -65,11 +65,32 @@ def save_and_lem():
 def nodes_nice():
     documents = repo.get_all_documents()
     links = repo.get_all_links()
+    imp_links = [{
+            'data':
+                {
+                    "source": 1,
+                    "target": 25
+                },
+            "classes": "implicit"
+        }]
     DAG = {
         "nodes": documents,
-        "edges": links
+        "edges": links + imp_links
     }
     return JsonTransformer().transform(DAG)
+
+# @app.route('/api/get_implicit_links')
+# def get_implicit_links():
+#     return {
+#         "edges": [{
+#             'data':
+#                 {
+#                     "source": 1,
+#                     "target": 3
+#                 },
+#             "classes": "implicit"
+#         }]
+#     }
 
 
 @app.route('/api/save_file', methods=['POST'])

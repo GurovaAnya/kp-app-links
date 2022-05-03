@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 export function Graph(){
   const cyto = useRef();
   const navigate = useNavigate();
-  const [graph, setGraph] = useState([]);
+  const [graph, setGraph] = useState({"edges":[],"nodes":[]});
 
   useEffect(() => {
     let mounted = true;
@@ -36,6 +36,14 @@ export function Graph(){
           style: {
             "curve-style": "bezier",
             "target-arrow-shape": "triangle"
+          }
+        },
+        {
+          selector: ".implicit",
+          style: {
+             'line-style': 'dashed',
+            "target-arrow-shape": "none",
+            'line-color': "#0000FF"
           }
         }
       ],

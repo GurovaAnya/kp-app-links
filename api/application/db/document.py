@@ -1,6 +1,6 @@
 from peewee import AutoField, TextField
 
-from api.application.db.base_model import BaseModel
+from ..db.base_model import BaseModel
 
 
 class Document(BaseModel):
