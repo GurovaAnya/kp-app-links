@@ -1,5 +1,6 @@
 from ..services.extracted_document import ExtractedDocument
 from ..db.document import Document
+from ..models.implicit_link import ImplicitLink
 
 
 class Mapper:
@@ -33,3 +34,18 @@ class Mapper:
             date=extracted_document.date,
             type=extracted_document.type
         )
+
+    @staticmethod
+    def map_iml_link_to_edge(link: ImplicitLink):
+        return {
+            'data':
+                {
+                    "source": link.id_1,
+                    "target": link.id_2
+                },
+            "classes": "implicit"
+        }
+
+    @staticmethod
+    def map_impl_link_list_to_edges(links: list[ImplicitLink]):
+        return [Mapper.map_iml_link_to_edge(link) for link in links]

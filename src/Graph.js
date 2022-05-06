@@ -41,7 +41,7 @@ export function Graph(){
         {
           selector: ".implicit",
           style: {
-             'line-style': 'dashed',
+            'line-style': 'dashed',
             "target-arrow-shape": "none",
             'line-color': "#0000FF"
           }
@@ -54,7 +54,6 @@ export function Graph(){
     cy.nodes().on('click', function(e) {
       const nodeData = e.target.data();
       navigate("document/" + nodeData.id);
-      console.log(nodeData);
     })
       }, [graph]);
 

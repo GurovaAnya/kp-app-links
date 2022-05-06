@@ -1,6 +1,7 @@
 from ..db.link import Link
 from ..db.document import Document
 from ..models.mapper import Mapper
+from peewee import fn
 
 
 class RelationsRepository:
@@ -21,7 +22,8 @@ class RelationsRepository:
                                  and Document.authority == authority and Document.number == number)
 
     def find_document_by_number_date_type(self, number, date, type) -> Document:
-        return self.document.get_or_none(Document.number == number, Document.date == date, Document.type == type)
+        # print(fn.Lower(number))
+        return self.document.get_or_none(fn.Lower(Document.number) == number.lower(), Document.date == date, fn.Lower(Document.type) == type.lower())
 
     def save_link(self, link: Link):
         return link.save()

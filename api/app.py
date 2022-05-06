@@ -7,6 +7,8 @@ from application.repositories.relations_repository import RelationsRepository
 from application.services.document_service import DocumentService
 from application.services.ontology_service import OntologyService
 from application.utils.json_transformer import JsonTransformer
+from application.services.implicit_links_service import ImplicitLinksService
+from application.models.mapper import Mapper
 
 app = Flask(__name__)
 app.secret_key = "super secret key"
@@ -17,7 +19,8 @@ repo = RelationsRepository()
 ontology_service = OntologyService()
 document_service = DocumentService()
 setting_file = open('settings/patters.txt', 'r')
-patterns = setting_file.readlines()
+patterns = setting_file.read().splitlines()
+implicit_links_service = ImplicitLinksService(patterns)
 
 
 @app.route('/api/document', methods=['POST'])
@@ -65,32 +68,13 @@ def save_and_lem():
 def nodes_nice():
     documents = repo.get_all_documents()
     links = repo.get_all_links()
-    imp_links = [{
-            'data':
-                {
-                    "source": 1,
-                    "target": 25
-                },
-            "classes": "implicit"
-        }]
+    imp_links = Mapper.map_impl_link_list_to_edges(implicit_links_service.get_implicit_links(50))
+    print(imp_links)
     DAG = {
         "nodes": documents,
         "edges": links + imp_links
     }
     return JsonTransformer().transform(DAG)
-
-# @app.route('/api/get_implicit_links')
-# def get_implicit_links():
-#     return {
-#         "edges": [{
-#             'data':
-#                 {
-#                     "source": 1,
-#                     "target": 3
-#                 },
-#             "classes": "implicit"
-#         }]
-#     }
 
 
 @app.route('/api/save_file', methods=['POST'])
@@ -117,4 +101,9 @@ def ont_from_text():
 def tt():
     file = request.files['file']
     result = ontology_service.extract_from_file(file)
+    return JsonTransformer().transform(result)
+
+@app.route("/api/imp")
+def impl():
+    result = implicit_links_service.get_implicit_links(50)
     return JsonTransformer().transform(result)

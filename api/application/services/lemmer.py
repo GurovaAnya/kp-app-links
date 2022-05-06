@@ -37,7 +37,6 @@ class Lemmer():
         return tokens_norm
 
     def find_words(self, keywords):
-
         for (i, keyword) in enumerate(keywords):
             iteration = re.finditer(keyword, self.lemmed_string, re.IGNORECASE)
             for match in iteration:
@@ -58,7 +57,7 @@ class Lemmer():
                                  end_index=end,
                                  text=match_orig,
                                  text_lemmed=match.group(0),
-                                 authority=groups["authority"],
-                                 number=groups["number"],
-                                 date=groups["date"],
-                                 doc_type=groups["type"])
+                                 authority=groups.get("authority"),
+                                 number=groups.get("number"),
+                                 date=groups.get("date"),
+                                 doc_type=groups.get("type"))
