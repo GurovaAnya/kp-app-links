@@ -61,27 +61,25 @@ const AddTextDialog = (props) => {
                 />
 
 
-                <Button
-                    fullWidth variant="contained"
-                    onClick={handleDocumentLoad}
-                    sx={{backgroundColor: "#00d2ca"}}
-                >
-                    Сохранить
-                </Button>
-
-                <input
+                    <Button >
+                        Загрузить документ из файла
+                        <input
                     // accept=".owl"
                     // style={{ display: 'none' }}
                     id="raised-button-file"
                     type="file"
                     // name="file"
+                    hidden
                     onChange={(e) => setFile(e.target.files[0])}
                 />
-                <label htmlFor="raised-button-file">
-                    <Button variant="raised" component="span">
-                        Upload
                     </Button>
-                </label>
+
+                <Button
+                    fullWidth variant="contained"
+                    onClick={handleDocumentLoad}
+                >
+                    Сохранить
+                </Button>
 
             </DialogContent>
         </Dialog>

@@ -43,7 +43,7 @@ export function Graph(){
           style: {
             'line-style': 'dashed',
             "target-arrow-shape": "none",
-            'line-color': "#0000FF"
+            'line-color': "#9090fa"
           }
         }
       ],

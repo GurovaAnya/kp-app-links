@@ -15,7 +15,7 @@ const Header = () => {
     const [isAddModalShown, setAddModalShown] = useState(false);
 
     return (
-        <AppBar position="static" sx={{backgroundColor:"#00d2ca"}}>
+        <AppBar position="static" >
             <Toolbar>
                 <IconButton
                     size="large"

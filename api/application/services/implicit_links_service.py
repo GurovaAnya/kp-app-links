@@ -20,9 +20,7 @@ class ImplicitLinksService:
             existing_doc = self.relations_repository.find_document_by_number_date_type(doc.number, doc.date, doc.type)
             if existing_doc is not None:
                 external_service_ids_to_local[name["id"]] = existing_doc.id
-            print("----------")
             print(name, doc.date, doc.type, doc.number)
-            print("--------------")
 
         return external_service_ids_to_local
 
@@ -57,8 +55,7 @@ class ImplicitLinksService:
             "names": [
                 {"id": "1",
                  "name": 'Федеральный закон от 29 декабря 2012 N 273-ФЗ "Об образовании в Российской Федерации"'},
-                {"id": "2", "name": "Конституция РФ"},
-                # {"id": "2", "name": 'Федеральный закон от 15 декабря 2015 N 545-ФЗ "О чем-то еще"'},
+                {"id": "2", "name": 'Закон от 12 марта 2014 года N 308-ПК  "Об образовании в Пермском крае"'},
                 {"id": "3", "name": 'Федеральный закон от 15 декабря 2014 N 555-ФЗ "О дипломе"'}
             ]
         }
@@ -66,10 +63,7 @@ class ImplicitLinksService:
     def map_to_class(self, values):
         result = []
         for value in values:
-            print("@@@@@@")
-            print(value)
             id_1: str = str(value["id_1"][0])
             id_2: str = str(value["id_2"][0])
-            print(id_1)
             result.append(ImplicitLink(id_1=id_1, id_2=id_2, value=value["value"]))
         return result
