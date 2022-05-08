@@ -38,3 +38,18 @@ class RelationsRepository:
 
     def get_document_by_id(self, id):
         return self.document.get_by_id(id)
+
+    def get_link_by_id(self, id):
+        return self.link.get_by_id(id)
+
+    def get_child_documents(self, doc_id):
+        response = Document.select(Document, Link.id, Link.start_index, Link.end_index)\
+            .join(Link, on=(Document.id == Link.child_id))\
+            .where(Link.parent_id == doc_id)
+        return [Mapper.map_to_ref_document(q) for q in response]
+
+    def get_parent_documents(self, doc_id):
+        response = Document.select(Document, Link.id, Link.start_index, Link.end_index)\
+            .join(Link, on=(Document.id == Link.parent_id))\
+            .where(Link.child_id == doc_id)
+        return [Mapper.map_to_ref_document(q) for q in response]

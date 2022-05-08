@@ -30,6 +30,18 @@ def add_document():
     doc = repo.save_doc(doc)
     return JsonTransformer().transform(doc)
 
+@app.route('/api/document/<int:id>')
+def get_children(id):
+    document = repo.get_document_by_id(id)
+    parent_for = repo.get_child_documents(id)
+    child_for = repo.get_parent_documents(id)
+    result = {
+        "document": document.__data__,
+        "children": parent_for,
+        "parents": child_for
+    }
+    return JsonTransformer().transform(result)
+
 
 @app.route('/api/lem/<int:text_id>')
 def lem(text_id):
@@ -107,3 +119,13 @@ def tt():
 def impl():
     result = implicit_links_service.get_implicit_links(50)
     return JsonTransformer().transform(result)
+
+@app.route("/api/save_new_relation_indexes/<int:link_id>", methods=["POST"])
+def save_new_relation_indexes(link_id):
+    start_index = request.json["start_index"]
+    end_index = request.json["end_index"]
+    link = repo.get_link_by_id(link_id)
+    link.start_index = start_index
+    link.end_index = end_index
+    repo.save_link(link)
+    return Response(status=200)
