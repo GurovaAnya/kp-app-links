@@ -2,6 +2,7 @@ from ..repositories.relations_repository import RelationsRepository
 from ..services.document_service import DocumentService
 from ..models.implicit_link import ImplicitLink
 from ..db.document import Document
+from ..models.implicit_ref_document import ImplicitRefDocument
 
 
 class ImplicitLinksService:
@@ -37,6 +38,24 @@ class ImplicitLinksService:
             if id_1 in mapped_docs.keys() and id_2 in mapped_docs.keys():
                 result.append(ImplicitLink(id_1=mapped_docs[id_1], id_2=mapped_docs[id_2], value=value.value))
         return result
+
+    def get_implicit_links_for_id(self, id, threshold):
+        all_links = self.get_implicit_links(threshold)
+        for link in all_links:
+            external_link: int
+            if link.id_1 == id:
+                external_link = link.id_2
+            elif link.id_2 == id:
+                external_link == link.id_1
+            else:
+                continue
+
+            doc = self.relations_repository.get_document_by_id(external_link)
+            yield ImplicitRefDocument(
+                id=external_link,
+                name=doc.name,
+                value=link.value
+            )
 
     def get_links_from_outer_service(self):
         return {

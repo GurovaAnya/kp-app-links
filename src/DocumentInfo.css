@@ -16,3 +16,9 @@
 .doc-relation-info-header{
     text-decoration: underline;
 }
+
+.related-doc-name{
+    margin: 10px 0 0 0;
+    font-size: 105%;
+    font-weight: bold;
+}

@@ -31,22 +31,22 @@ class OntologyExtractor:
         for row in qres:
             print(row)
             child = ExtractedDocument(
-                ontology_id=str(row["childDoc"]),
-                name=str(row["childDocName"]),
-                type=str(row["childType"]),
-                date=str(row["childDate"]),
-                number=str(row["childNumber"])
+                ontology_id=self.to_str_or_None(row["childDoc"]),
+                name=self.to_str_or_None(row["childDocName"]),
+                type=self.to_str_or_None(row["childType"]),
+                date=self.to_str_or_None(row["childDate"]),
+                number=self.to_str_or_None(row["childNumber"])
             )
 
             if child.ontology_id not in documents:
                 documents[child.ontology_id] = child
 
             parent = ExtractedDocument(
-                ontology_id=str(row["parentDoc"]),
-                name=str(row["parentDocName"]),
-                type=str(row["parentType"]),
-                date=str(row["parentDate"]),
-                number=str(row["parentNumber"])
+                ontology_id=self.to_str_or_None(row["parentDoc"]),
+                name=self.to_str_or_None(row["parentDocName"]),
+                type=self.to_str_or_None(row["parentType"]),
+                date=self.to_str_or_None(row["parentDate"]),
+                number=self.to_str_or_None(row["parentNumber"])
             )
 
             if parent.ontology_id not in documents:
@@ -60,3 +60,8 @@ class OntologyExtractor:
             links.append(link)
 
         return ExtractionResult(documents, links)
+
+    def to_str_or_None(self, value):
+        if value is None:
+            return None
+        return str(value)

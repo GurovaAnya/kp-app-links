@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {DialogContent, DialogTitle, TextField, Dialog, Button} from "@mui/material";
 import axios from "axios";
+import {Input} from "@material-ui/core";
 
 const AddTextDialog = (props) => {
     const [text, setText] = useState("");
@@ -54,25 +55,33 @@ const AddTextDialog = (props) => {
                     fullWidth
                     multiline
                     name="text"
-                    label="Онтология в формате owl"
+                    // label="Онтология в формате owl"
                     id="text"
                     value={text}
+
                     onChange={(event) => setText(event.target.value)}
                 />
 
+                {/*<input*/}
+                {/*    id="input_owl"*/}
+                {/*            accept=".owl"*/}
+                {/*            style={{ display: 'none' }}*/}
+                {/*            type="file"*/}
+                {/*            // name="file"*/}
+                {/*            // hidden*/}
+                {/*            onChange={(e) => setFile(e.target.files[0])}*/}
+                {/*        />*/}
 
-                    <Button >
-                        Загрузить документ из файла
-                        <input
-                    // accept=".owl"
-                    // style={{ display: 'none' }}
-                    id="raised-button-file"
-                    type="file"
-                    // name="file"
-                    hidden
-                    onChange={(e) => setFile(e.target.files[0])}
-                />
-                    </Button>
+                {/*<label htmlFor="input_owl">*/}
+                    <Input accept=".owl"
+                           id="input_owl"
+                           type="file"
+                           onChange={(e) => setFile(e.target.files[0])}/>
+                    {/*<Button htmlFor="input_owl" component="span">*/}
+                    {/*    Загрузить документ из файла*/}
+                    {/*</Button>*/}
+                {/*</label>*/}
+
 
                 <Button
                     fullWidth variant="contained"

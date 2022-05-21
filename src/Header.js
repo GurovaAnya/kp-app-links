@@ -8,11 +8,13 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
 import AddIcon from '@mui/icons-material/Add';
 import AddTextDialog from "./AddTextDialog";
+import AddFromRomaDialog from "./AddFromRomaDialog";
 
 
 const Header = () => {
 
     const [isAddModalShown, setAddModalShown] = useState(false);
+    const [isAddFromRomaShown, setIsAddFromRomaShown] = useState(false);
 
     return (
         <AppBar position="static" >
@@ -43,8 +45,18 @@ const Header = () => {
                     sx={{mr: 2}}
                     onClick={() => setAddModalShown(true)}
                 />
+                <Button
+                    color="inherit"
+                    onClick={() => setIsAddFromRomaShown(true)}
+                >
+                    Загрузить из системы
+                </Button>
             </Toolbar>
 
+            <AddFromRomaDialog
+                onClose={() => setIsAddFromRomaShown(false)}
+                isOpen={isAddFromRomaShown}
+                />
 
             <AddTextDialog
                 onClose={() => setAddModalShown(false)}

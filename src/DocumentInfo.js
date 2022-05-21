@@ -11,7 +11,8 @@ const DocumentInfo = () => {
     const [document, setDocument] = useState({
         "document": {},
         "children": [],
-        "parents": []
+        "parents": [],
+        "implicit": []
     });
 
     useEffect(() => {
@@ -19,6 +20,7 @@ const DocumentInfo = () => {
     fetch('/api/document/' + id).then(data => data.json()).then(doc => {
       if (mounted){
         setDocument(doc);
+        console.log(doc);
       }
     })
     return () => mounted = false;
@@ -48,36 +50,47 @@ const DocumentInfo = () => {
                     })
                 }
             </div>
+            <div className="doc-relation-info-container">
+                <div className="doc-relation-info-header">
+                    Семантически близкие законы:
+                </div>
+                {
+                    document.implicit.map((doc) => {
+                         return <ImplicitRelationInfo key={doc.id} name={doc.name} value={doc.value}/>
+                    })
+                }
+            </div>
         </div>
     )
 }
 
 export default DocumentInfo
 
+const ImplicitRelationInfo = ({name, value}) => {
+    return (
+        <div className="related-doc-name">
+                {name} ({value}%)
+            </div>
+    );
+}
+
 const RelationInfo = (props) => {
     const text = props.child.text;
 
     return  (
         <>
-            <div>
-                {props.child.name} ({props.child.start_index}:{props.child.end_index})
-            </div>
-            {
-                (
-                    <>
-                        <Highlighted
-                            text={props.child.text}
-                            start={props.child.start_index}
-                            end={props.child.end_index}
-                            id={props.child.link_id}
-                        />
-                    </>
-                )
-            }
+            <Highlighted
+                text={props.child.text}
+                start={props.child.start_index}
+                end={props.child.end_index}
+                id={props.child.link_id}
+                name={props.child.name}
+            />
+
         </>)
 }
 
-const Highlighted = ({ text = "", start, end, id}) => {
+const Highlighted = ({ text = "", start, end, id, name}) => {
 
     const [startIdx, setStartIdx] = useState(start);
     const [endIdx, setEndIdx] = useState(end);
@@ -109,24 +122,25 @@ const Highlighted = ({ text = "", start, end, id}) => {
 
     return (
         <>
+            <div className="related-doc-name">
+                {name} ({startIdx}:{endIdx})
+            </div>
             <div
                 id={"law-text-" + id}
                 onMouseUp={handleMouseUp}
             >
                 {isEditMode && text}
-
-                {!isEditMode &&
-                    <>
-                        {text.substring(0, startIdx)}
-                        <u>{text.substring(startIdx, endIdx)}</u>
-                        {text.substring(endIdx)}
-                        <EditIcon fontSize="small" onClick={() => setIsEditMode(true)}/>
-                    </>
-                }
-
-
             </div>
             {isEditMode && (<Button onClick={() => save()}>Сохранить</Button>)}
+
+            {!isEditMode &&
+                <div >
+                    {text.substring(0, startIdx)}
+                    <u>{text.substring(startIdx, endIdx)}</u>
+                    {text.substring(endIdx)}
+                    <EditIcon fontSize="small" onClick={() => setIsEditMode(true)}/>
+                </div>
+            }
         </>
     )
 };

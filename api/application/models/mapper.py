@@ -59,5 +59,4 @@ class Mapper:
             name=query_response.name,
             start_index=query_response.link.start_index,
             end_index=query_response.link.end_index,
-            text="Это тестовый текст который возвращается, пока не настроена полностью интеграция с модулем онтологий"
         )

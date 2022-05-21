@@ -22,8 +22,17 @@ class RelationsRepository:
                                  and Document.authority == authority and Document.number == number)
 
     def find_document_by_number_date_type(self, number, date, type) -> Document:
-        # print(fn.Lower(number))
-        return self.document.get_or_none(fn.Lower(Document.number) == number.lower(), Document.date == date, fn.Lower(Document.type) == type.lower())
+        print("!!!!", number, date, type)
+        if number is None:
+            return self.document.get_or_none((Document.number.is_null()) &
+                                             ((date is None) & Document.date.is_null() | (date is not None) & (Document.date == date )) &
+                                               (Document.type == type.lower()))
+
+
+        return self.document.get_or_none(fn.Upper(Document.number) == number.upper(),
+                                         ((date is None) & Document.date.is_null() | (date is not None) & (
+                                                     Document.date == date)),
+                                         fn.Lower(Document.type) == type.lower())
 
     def save_link(self, link: Link):
         return link.save()
@@ -53,3 +62,8 @@ class RelationsRepository:
             .join(Link, on=(Document.id == Link.parent_id))\
             .where(Link.child_id == doc_id)
         return [Mapper.map_to_ref_document(q) for q in response]
+
+    def save_link_if_not_exists(self, db_link):
+        existing = Link.get_or_none(Link.parent_id == db_link.parent_id, Link.child_id == db_link.child_id)
+        if existing is None:
+            Link.save(db_link)

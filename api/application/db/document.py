@@ -1,4 +1,4 @@
-from peewee import AutoField, TextField
+from peewee import AutoField, TextField, IntegerField, DateTimeField
 
 from ..db.base_model import BaseModel
 
@@ -9,8 +9,9 @@ class Document(BaseModel):
     type = TextField(column_name="type")
     number = TextField(column_name="number")
     authority = TextField(column_name="authority")
-    date = TextField(column_name="date")
+    date = DateTimeField(column_name="date")
     text = TextField(column_name='text')
+    ont_id = IntegerField(column_name='ont_id')
 
     class Meta:
         table_name = 'document'
