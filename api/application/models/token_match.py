@@ -10,7 +10,7 @@ class TokenMatch:
     type: str
 
     def __init__(self, start_index: int, end_index: int, text: str,
-                 text_lemmed: str, authority: str, number: str, date: str, doc_type: str):
+                 text_lemmed: str, authority: str, number: str, date: str, doc_type: str, relation_type):
         self.text = text
         self.end_index = end_index
         self.start_index = start_index
@@ -19,3 +19,4 @@ class TokenMatch:
         self.number = number
         self.date = date
         self.type = doc_type
+        self.relation_type = relation_type

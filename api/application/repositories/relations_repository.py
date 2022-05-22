@@ -12,7 +12,7 @@ class RelationsRepository:
         self.mapper = Mapper()
 
     def get_all_links(self):
-        return [self.mapper.map_edge(i.parent_id.id, i.child_id.id) for i in self.link.select()]
+        return [self.mapper.map_edge(i.parent_id.id, i.child_id.id, i.type) for i in self.link.select()]
 
     def get_all_documents(self):
         return [self.mapper.map_node(i.id, i.name) for i in self.document.select()]
@@ -43,6 +43,8 @@ class RelationsRepository:
             link.save()
 
     def save_doc(self, doc: Document):
+        if doc.number == "NONE":
+            raise
         return doc.save()
 
     def get_document_by_id(self, id):
@@ -67,3 +69,9 @@ class RelationsRepository:
         existing = Link.get_or_none(Link.parent_id == db_link.parent_id, Link.child_id == db_link.child_id)
         if existing is None:
             Link.save(db_link)
+
+        if existing.type is None and db_link.type is not None:
+            print("Апдейтим ссылку, так как появился тип")
+            db_link.id = existing.id
+            Link.save(db_link)
+

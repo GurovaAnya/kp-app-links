@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, request, Response
 
 from ..models.mapper import Mapper
 from ..repositories.relations_repository import RelationsRepository
@@ -23,7 +23,7 @@ text_service = TextService()
 def nodes_nice():
     documents = repo.get_all_documents()
     links = repo.get_all_links()
-    imp_links = Mapper.map_impl_link_list_to_edges(implicit_links_service.get_implicit_links(50))
+    imp_links = Mapper.map_impl_link_list_to_edges(implicit_links_service.get_implicit_links(0.5))
     print(imp_links)
     DAG = {
         "nodes": documents,

@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, request
 
 from ..repositories.relations_repository import RelationsRepository
 from ..services.document_service import DocumentService
@@ -15,6 +15,8 @@ ontology_service = OntologyService()
 document_service = DocumentService()
 setting_file = open('patters.txt', 'r')
 patterns = setting_file.read().splitlines()
+relations_file = open('relations.txt', 'r')
+relations = relations_file.read().splitlines()
 implicit_links_service = ImplicitLinksService(patterns)
 text_service = TextService()
 
@@ -24,7 +26,7 @@ def save_and_lem():
     doc = document_service.extract_doc_from_title(document_request["full_name"], document_request["text"], patterns)
     repo.save_doc(doc)
     lemmer = document_service.lem_text(document_request["text"])
-    matched = document_service.find_links_in_lemed_text(lemmer, patterns)
+    matched = document_service.find_links_in_lemed_text(lemmer, patterns, relations)
 
     result = {
         "lemmed": lemmer.lemmed_string,
@@ -45,7 +47,7 @@ def save_and_lem_ont(ont_id):
         repo.save_doc(doc)
         existing = doc
     lemmer = document_service.lem_text(text['text'])
-    matched = document_service.find_links_in_lemed_text(lemmer, patterns)
+    matched = document_service.find_links_in_lemed_text(lemmer, patterns, relations)
 
     result = {
         "lemmed": lemmer.lemmed_string,

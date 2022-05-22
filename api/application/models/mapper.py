@@ -7,13 +7,14 @@ from ..models.ref_document import RefDocument
 class Mapper:
 
     @staticmethod
-    def map_edge(source, target):
+    def map_edge(source, target, type):
         return {
             'data':
                 {
                     "source": source,
                     "target": target
-                }
+                },
+            'classes': type
         }
 
     @staticmethod

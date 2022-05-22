@@ -42,11 +42,10 @@ class ImplicitLinksService:
     def get_implicit_links_for_id(self, id, threshold):
         all_links = self.get_implicit_links(threshold)
         for link in all_links:
-            external_link: int
             if link.id_1 == id:
                 external_link = link.id_2
             elif link.id_2 == id:
-                external_link == link.id_1
+                external_link = link.id_1
             else:
                 continue
 
@@ -63,12 +62,12 @@ class ImplicitLinksService:
                 {
                     "id_1": "1",
                     "id_2": "2",
-                    "value": 100
+                    "value": 1
                 },
                 {
                     "id_1": "1",
                     "id_2": "3",
-                    "value": 50
+                    "value": 0.5
                 }
             ],
             "names": [

@@ -9,6 +9,7 @@ class Link(BaseModel):
     child_id = ForeignKeyField(column_name="child_id", model=Document)
     start_index = IntegerField(column_name="start_index")
     end_index = IntegerField(column_name="end_index")
+    type = IntegerField(column_name="type")
 
     class Meta:
         table_name = 'links'

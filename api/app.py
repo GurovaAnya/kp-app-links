@@ -42,5 +42,5 @@ def tt():
 
 @app.route("/api/imp")
 def impl():
-    result = implicit_links_service.get_implicit_links(50)
+    result = implicit_links_service.get_implicit_links(0.5)
     return JsonTransformer().transform(result)

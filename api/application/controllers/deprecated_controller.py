@@ -9,8 +9,8 @@ deprecated_controller = Blueprint('deprecated_controller', __name__,
 
 document_service = DocumentService()
 repo = RelationsRepository()
-# setting_file = open('..settings/patters.txt', 'r')
-# patterns = setting_file.read().splitlines()
+relations_file = open('relations.txt', 'r')
+relations = relations_file.read().splitlines()
 
 @deprecated_controller.route('/api/document', methods=['POST'])
 def add_document():
