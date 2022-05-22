@@ -13,6 +13,7 @@ export function Graph(){
     let mounted = true;
     fetch('/api/nodes').then(data => data.json()).then(items => {
       if (mounted){
+        console.log(items);
         setGraph(items);
       }
     })
@@ -44,6 +45,24 @@ export function Graph(){
             'line-style': 'dashed',
             "target-arrow-shape": "none",
             'line-color': "#9090fa"
+          }
+        },
+        {
+          selector: ".0",
+          style: {
+            "line-color": "#6fb656"
+          }
+        },
+        {
+          selector: ".1",
+          style: {
+            "line-color": "#e53b3b"
+          }
+        },
+        {
+          selector: ".2",
+          style: {
+            "line-color": "#4570d2"
           }
         }
       ],

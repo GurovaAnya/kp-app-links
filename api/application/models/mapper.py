@@ -14,7 +14,7 @@ class Mapper:
                     "source": source,
                     "target": target
                 },
-            'classes': type
+            'classes': str(type)
         }
 
     @staticmethod
