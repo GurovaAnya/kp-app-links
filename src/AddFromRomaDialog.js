@@ -1,6 +1,12 @@
 import React, {useEffect, useState} from "react";
-import {DialogContent, DialogTitle, TextField, Dialog, Button, Select, InputLabel, FormControl} from "@mui/material";
-import {MenuItem} from "@material-ui/core";
+import {
+    DialogContent,
+    DialogTitle,
+    TextField,
+    Dialog,
+    Button,
+    Autocomplete
+} from "@mui/material";
 import "./styles.css"
 
 const AddTextDialog = (props) => {
@@ -8,14 +14,13 @@ const AddTextDialog = (props) => {
     const [info, setInfo] = useState([]);
 
     useEffect(() => {
-    let mounted = true;
-    fetch('/api/document/get_all_onts').then(data => data.json()).then(doc => {
-      if (mounted){
-        setInfo(doc);
-        setOntId(doc.next().id)
-      }
-    })
-    return () => mounted = false;
+        let mounted = true;
+        fetch('/api/document/get_all_onts').then(data => data.json()).then(doc => {
+          if (mounted){
+            setInfo(doc);
+          }
+        })
+        return () => mounted = false;
   }, [])
 
     const handleSubmit = () => {
@@ -27,7 +32,7 @@ const AddTextDialog = (props) => {
             }
         })
             .catch(error => alert(error))
-            .then(r => props.onClose())
+            .then(props.onClose)
     }
 
 
@@ -41,23 +46,17 @@ const AddTextDialog = (props) => {
                 Выбрать документ
             </DialogTitle>
             <DialogContent>
-                <FormControl
-                    fullWidth
-                    className="select-doc"
-                >
-                    <InputLabel>Выбрать</InputLabel>
-                    <Select
-                        label="Выбрать текст"
-                        value={ontId}
-                        onChange={(event) => setOntId(event.target.value)}
+
+                    <Autocomplete
+                        sx={{ width: 500 }}
+                        options={info.map((value) => {return {"label" : value.name, "id": value.id};})}
+                        renderInput={(params) => <TextField {...params} label="Выбрать текст" />}
+                        onChange={
+                            (event, option) => setOntId(option?.id)}
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
                     >
-                        {info.map((value) => {
-                            return (
-                                <MenuItem value={value.id}>{value.name}</MenuItem>
-                            )
-                        })}
-                    </Select>
-                </FormControl>
+
+                    </Autocomplete>
                 <Button
                     fullWidth variant="contained"
                     onClick={handleSubmit}
