@@ -11,7 +11,7 @@ import AddTextDialog from "./AddTextDialog";
 import AddFromRomaDialog from "./AddFromRomaDialog";
 
 
-const Header = () => {
+const Header = ({toggleSideMenu}) => {
 
     const [isAddModalShown, setAddModalShown] = useState(false);
     const [isAddFromRomaShown, setIsAddFromRomaShown] = useState(false);
@@ -25,6 +25,7 @@ const Header = () => {
                     color="inherit"
                     aria-label="menu"
                     sx={{mr: 2}}
+                    onClick={toggleSideMenu}
                 >
                     <MenuIcon/>
                 </IconButton>

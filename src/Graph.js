@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 import {SideMenu} from "./SideMenu";
 
 
-export function Graph() {
+export function Graph({showSideMenu}) {
     const cyto = useRef();
     const navigate = useNavigate();
     const [graph, setGraph] = useState({"edges": [], "nodes": []});
@@ -16,6 +16,7 @@ export function Graph() {
         classesToHideCopy[classes] = cy.$(classes).remove()
         setClassesToHide(classesToHideCopy);
     }
+
     const restore = (classes) => {
         const classesToHideCopy = classesToHide;
         const dataToRestore = classesToHideCopy[classes];
@@ -94,12 +95,18 @@ export function Graph() {
 
     }, [graph]);
 
+    console.log("Graph", showSideMenu);
     return (
-        <>
-
-            <SideMenu filter={filter} restore={restore}/>
-            <div className="graph" ref={cyto}/>
-        </>
+        <div className={"graph-flex-container"}>
+            {showSideMenu && (
+                <div className={"side-menu"} >
+                    <SideMenu className={"graph-flex-child"} filter={filter} restore={restore}/>
+                </div>
+            )}
+            <div className={"graph-flex-child"}>
+                <div className="graph" ref={cyto}/>
+            </div>
+        </div>
 
     );
 }
