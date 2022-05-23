@@ -8,7 +8,7 @@ from ..services.implicit_links_service import ImplicitLinksService
 from ..services.text_service import TextService
 
 extraction_controller = Blueprint('extraction_controller', __name__,
-                        template_folder='templates')
+                                  template_folder='templates')
 
 repo = RelationsRepository()
 ontology_service = OntologyService()
@@ -19,6 +19,7 @@ relations_file = open('relations.txt', 'r')
 relations = relations_file.read().splitlines()
 implicit_links_service = ImplicitLinksService(patterns)
 text_service = TextService()
+
 
 @extraction_controller.route('/api/save_and_lem', methods=['POST'])
 def save_and_lem():
@@ -36,8 +37,10 @@ def save_and_lem():
     document_service.save_matched_links(matched, doc)
     return JsonTransformer().transform(result)
 
-@extraction_controller.route('/api/save_and_lem/<int:ont_id>', methods=['POST'])
+
+@extraction_controller.route('/api/save_and_lem/<ont_id>', methods=['POST'])
 def save_and_lem_ont(ont_id):
+    print('ТУТА')
     text = text_service.get_text_from_service(ont_id)
     doc = document_service.extract_doc_from_title(text["name"], text['text'], patterns)
     doc.ont_id = ont_id

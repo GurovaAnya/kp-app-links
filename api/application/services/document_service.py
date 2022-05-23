@@ -2,7 +2,6 @@ from ..db.link import Link
 from ..db.document import Document
 from ..repositories.relations_repository import RelationsRepository
 from ..services.lemmer import Lemmer
-from ..utils.converter import Converter
 
 repo = RelationsRepository()
 
@@ -14,6 +13,8 @@ class DocumentService:
         lemmed = lemmer.get_lemmed_string()
         matched = list(lemmer.find_words_for_title(patterns))
         print(lemmed)
+        for i in matched:
+            print()
         first_match = matched[0]
         number = first_match.number
         if number is not None:
