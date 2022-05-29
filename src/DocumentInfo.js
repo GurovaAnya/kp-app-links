@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom"
 import EditIcon from '@mui/icons-material/Edit';
-import {Button, TextField} from "@material-ui/core";
+import {Button} from "@material-ui/core";
 import "./DocumentInfo.css"
 import axios from "axios";
 
@@ -30,6 +30,7 @@ const DocumentInfo = () => {
     return (
         <div className="doc-container">
             <div className="doc-name">{document.document.name}</div>
+            <div>{document.document.text}</div>
             <div className="doc-relation-info-container">
                 <div className="doc-relation-info-header">
                     Ссылается на другие законы:

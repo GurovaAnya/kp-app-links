@@ -15,7 +15,7 @@ class TextService():
         print("id = ", id)
         text = self.repo.get_document_by_id(id)
         print("ont_id = ", text.ont_id)
-        return self.get_text_from_service(text.ont_id)["text"]
+        return self.get_text_from_service(text.ont_id)["text"].strip()
 
     def get_all_texts_json(self):
         return json.dumps([doc for doc in self.mongo_repo.get_all_documents()])

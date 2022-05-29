@@ -25,6 +25,13 @@ export function Graph({showSideMenu}) {
         setClassesToHide(classesToHideCopy);
     }
 
+    const focusById = (id) => {
+        if (id === null || id === undefined)
+            cy.fit(cy.nodes, 100);
+        else
+            cy.fit(cy.$('#'+id), 300);
+    }
+
     useEffect(() => {
         let mounted = true;
         fetch('/api/nodes').then(data => data.json()).then(items => {
@@ -44,9 +51,17 @@ export function Graph({showSideMenu}) {
 
             style: [
                 {
+                    selector: 'edge.hover',
+                    style: {
+                        'label': 'data(type)'
+                    }
+                },
+                {
                     selector: "node[name]",
                     style: {
-                        content: "data(name)"
+                        content: "data(name)",
+                        "text-wrap": "wrap",
+                        "text-max-width": 300
                     }
                 },
 
@@ -74,13 +89,19 @@ export function Graph({showSideMenu}) {
                 {
                     selector: ".1",
                     style: {
-                        "line-color": "#e53b3b"
+                        "line-color": "#dac13f"
                     }
                 },
                 {
                     selector: ".2",
                     style: {
                         "line-color": "#4570d2"
+                    }
+                },
+                {
+                    selector: ".3",
+                    style:{
+                        "line-color": "#e53b3b"
                     }
                 }
             ],
@@ -93,6 +114,14 @@ export function Graph({showSideMenu}) {
             navigate("document/" + nodeData.id);
         })
 
+        cy.edges().on('mouseover', function (e){
+            e.target.addClass('hover');
+        })
+
+        cy.edges().on('mouseout', function (e){
+            e.target.removeClass('hover');
+        })
+
     }, [graph]);
 
     console.log("Graph", showSideMenu);
@@ -100,7 +129,12 @@ export function Graph({showSideMenu}) {
         <div className={"graph-flex-container"}>
             {showSideMenu && (
                 <div className={"side-menu"} >
-                    <SideMenu className={"graph-flex-child"} filter={filter} restore={restore}/>
+                    <SideMenu
+                        className={"graph-flex-child"}
+                        filter={filter}
+                        restore={restore}
+                        names={graph.nodes}
+                        focusByName={(id) => focusById(id)}/>
                 </div>
             )}
             <div className={"graph-flex-child"}>

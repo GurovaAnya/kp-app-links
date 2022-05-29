@@ -47,16 +47,16 @@ const AddTextDialog = (props) => {
             </DialogTitle>
             <DialogContent>
 
-                    <Autocomplete
-                        sx={{ width: 500 }}
-                        options={info.map((value) => {return {"label" : value.name, "id": value.id};})}
-                        renderInput={(params) => <TextField {...params} label="Выбрать текст" />}
-                        onChange={
-                            (event, option) => setOntId(option?.id)}
-                        isOptionEqualToValue={(option, value) => option.id === value.id}
-                    >
+                <Autocomplete
+                    sx={{ width: 500 }}
+                    options={info.map((value) => {return {"label" : value.name, "id": value.id};})}
+                    renderInput={(params) => <TextField {...params} label="Выбрать текст" />}
+                    onChange={
+                        (event, option) => setOntId(option?.id)}
+                    isOptionEqualToValue={(option, value) => option.id === value.id}
+                >
 
-                    </Autocomplete>
+                </Autocomplete>
                 <Button
                     fullWidth variant="contained"
                     onClick={handleSubmit}

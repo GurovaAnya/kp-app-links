@@ -8,11 +8,18 @@ class Mapper:
 
     @staticmethod
     def map_edge(source, target, type):
+        types = {
+            0:  "в соответствии с",
+            1: "регулирует",
+            2: "вносит изменения",
+            3: "признает утратившим силу"
+        }
         return {
             'data':
                 {
                     "source": source,
-                    "target": target
+                    "target": target,
+                    "type": types.get(type, "")
                 },
             'classes': str(type).lower()
         }
@@ -43,7 +50,8 @@ class Mapper:
             'data':
                 {
                     "source": link.id_1,
-                    "target": link.id_2
+                    "target": link.id_2,
+                    "type": "неявная ссылка"
                 },
             "classes": "implicit"
         }

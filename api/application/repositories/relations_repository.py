@@ -69,6 +69,7 @@ class RelationsRepository:
         existing = Link.get_or_none(Link.parent_id == db_link.parent_id, Link.child_id == db_link.child_id)
         if existing is None:
             Link.save(db_link)
+            return
 
         if existing.type is None and db_link.type is not None:
             print("Апдейтим ссылку, так как появился тип")

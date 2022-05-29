@@ -8,7 +8,7 @@ repo = RelationsRepository()
 
 class DocumentService:
 
-    def extract_doc_from_title(self, full_name, text, patterns):
+    def extract_doc_from_title(self, full_name, patterns):
         lemmer = Lemmer(full_name)
         lemmed = lemmer.get_lemmed_string()
         matched = list(lemmer.find_words_for_title(patterns))

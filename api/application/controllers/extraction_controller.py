@@ -24,7 +24,7 @@ text_service = TextService()
 @extraction_controller.route('/api/save_and_lem', methods=['POST'])
 def save_and_lem():
     document_request = request.json
-    doc = document_service.extract_doc_from_title(document_request["full_name"], document_request["text"], patterns)
+    doc = document_service.extract_doc_from_title(document_request["full_name"], patterns)
     repo.save_doc(doc)
     lemmer = document_service.lem_text(document_request["text"])
     matched = document_service.find_links_in_lemed_text(lemmer, patterns, relations)
@@ -42,14 +42,14 @@ def save_and_lem():
 def save_and_lem_ont(ont_id):
     print('ТУТА')
     text = text_service.get_text_from_service(ont_id)
-    doc = document_service.extract_doc_from_title(text["name"], text['text'], patterns)
+    doc = document_service.extract_doc_from_title(text["name"], patterns)
     doc.ont_id = ont_id
     existing = repo.find_document_by_number_date_type(doc.number, doc.date, doc.type)
 
     if existing is None:
         repo.save_doc(doc)
         existing = doc
-    lemmer = document_service.lem_text(text['text'])
+    lemmer = document_service.lem_text(text['text'].strip())
     matched = document_service.find_links_in_lemed_text(lemmer, patterns, relations)
 
     result = {

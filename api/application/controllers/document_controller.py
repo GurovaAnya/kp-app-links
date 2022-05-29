@@ -20,6 +20,7 @@ implicit_links_service = ImplicitLinksService(patterns)
 def get_children(id):
     document = repo.get_document_by_id(id)
     text = text_service.get_text_by_id(id)
+    document.text = text
     parent_for = repo.get_child_documents(id)
     child_for = repo.get_parent_documents(id)
 
