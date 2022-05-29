@@ -9,11 +9,11 @@ import {
 import MainPage from "./MainPage";
 
 
-const RoutesLocal = () => (
+const RoutesLocal = ({showSideMenu}) => (
     <Router>
         <Routes>
             <Route path="/document/:id" element={<DocumentInfo/>}/>
-            <Route path="/" element={<MainPage/>}/>
+            <Route path="/" element={<MainPage showSideMenu={showSideMenu}/>}/>
         </Routes>
     </Router>
 );

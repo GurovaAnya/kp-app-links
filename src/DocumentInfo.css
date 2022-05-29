@@ -1,0 +1,24 @@
+.doc-container{
+    margin-left: 50px;
+    margin-top: 20px;
+}
+
+.doc-name{
+    font-size: 150%;
+    color: #22588A;
+}
+
+.doc-relation-info-container{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.doc-relation-info-header{
+    text-decoration: underline;
+}
+
+.related-doc-name{
+    margin: 10px 0 0 0;
+    font-size: 105%;
+    font-weight: bold;
+}

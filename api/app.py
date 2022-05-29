@@ -1,65 +1,46 @@
-from flask import Flask
-from flask import request
+from flask import Flask, request
+from flask_cors import CORS
 
-from application.services.document_service import DocumentService
-from application.utils.json_transformer import JsonTransformer
 from application.repositories.relations_repository import RelationsRepository
+from application.services.document_service import DocumentService
+from application.services.ontology_service import OntologyService
+from application.utils.json_transformer import JsonTransformer
+from application.services.implicit_links_service import ImplicitLinksService
+from application.services.text_service import TextService
+from application.controllers.deprecated_controller import deprecated_controller
+from application.controllers.document_controller import document_controller
+from application.controllers.extraction_controller import extraction_controller
+from file_controller import file_controller
+from application.controllers.link_controller import link_controller
 
 
 app = Flask(__name__)
+app.register_blueprint(deprecated_controller)
+app.register_blueprint(document_controller)
+app.register_blueprint(extraction_controller)
+app.register_blueprint(file_controller)
+app.register_blueprint(link_controller)
+
+
+app.secret_key = "super secret key"
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 repo = RelationsRepository()
+ontology_service = OntologyService()
 document_service = DocumentService()
-setting_file = open('settings/patters.txt', 'r')
-patterns = setting_file.readlines()
+setting_file = open('application/settings/patters.txt', 'r')
+patterns = setting_file.read().splitlines()
+implicit_links_service = ImplicitLinksService(patterns)
+text_service = TextService()
 
-@app.route('/api/document', methods=['POST'])
-def add_document():
-    document_request = request.json
-    doc = document_service.extract_doc_from_title(document_request["full_name"], document_request["text"], patterns)
-    doc = repo.save_doc(doc)
-    return JsonTransformer().transform(doc)
-
-
-@app.route('/api/lem/<int:text_id>')
-def lem(text_id):
-    text = repo.get_document_by_id(text_id).text
-    lemmer = document_service.lem_text(text)
-    matched = document_service.find_links_in_lemed_text(lemmer, patterns)
-
-    result = {
-        "lemmed": lemmer.lemmed_string,
-        "matched": matched
-    }
-
-    document_service.save_matched_links(matched, text_id)
-
+@app.route("/api/tt", methods=['POST'])
+def tt():
+    file = request.files['file']
+    result = ontology_service.extract_from_file(file)
     return JsonTransformer().transform(result)
 
-
-@app.route('/api/save_and_lem', methods=['POST'])
-def save_and_lem():
-    document_request = request.json
-    doc = document_service.extract_doc_from_title(document_request["full_name"], document_request["text"], patterns)
-    repo.save_doc(doc)
-    lemmer = document_service.lem_text(document_request["text"])
-    matched = document_service.find_links_in_lemed_text(lemmer, patterns)
-
-    result = {
-        "lemmed": lemmer.lemmed_string,
-        "matched": matched
-    }
-
-    document_service.save_matched_links(matched, doc)
+@app.route("/api/imp")
+def impl():
+    result = implicit_links_service.get_implicit_links(0.5)
     return JsonTransformer().transform(result)
-
-
-@app.route('/api/nodes')
-def nodes_nice():
-    documents = repo.get_all_documents()
-    links = repo.get_all_links()
-    DAG = {
-        "nodes": documents,
-        "edges": links
-    }
-    return JsonTransformer().transform(DAG)

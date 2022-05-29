@@ -1,4 +1,25 @@
 .graph{
-  width: 100vw;
+  width: 70vw;
   height: 100vh;
+}
+
+.graph-flex-container{
+  display: flex;
+}
+
+.graph-flex-child{
+  flex: 1;
+}
+
+.side-menu{
+  padding: 20px;
+  border-right: solid #c4c4c4;
+}
+
+.select-doc{
+  min-width: 500px;
+}
+
+.side-menu-autocomplete{
+  margin-top: 50px;
 }
