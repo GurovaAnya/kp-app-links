@@ -31,6 +31,8 @@ class DocumentService:
         lemmer = Lemmer(full_name)
         lemmed = lemmer.get_lemmed_string()
         matched = list(lemmer.find_words_for_title(patterns))
+        if len(matched) == 0:
+            return None
         first_match = matched[0]
 
         doc = Document(name=full_name,
