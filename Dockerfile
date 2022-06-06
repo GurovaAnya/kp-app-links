@@ -6,5 +6,5 @@ RUN pip install -r ./requirements.txt
 COPY api ./
 ENV FLASK_ENV production
 
-EXPOSE 5000
-CMD ["gunicorn", "-b", ":5000", "app:app"]
+EXPOSE $PORT
+CMD ["gunicorn", "-b", ":", $PORT, "app:app"]
