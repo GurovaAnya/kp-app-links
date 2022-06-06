@@ -7,4 +7,4 @@ COPY api ./
 ENV FLASK_ENV production
 
 EXPOSE $PORT
-CMD ["gunicorn", "-b", ":$PORT", "app:app"]
+CMD gunicorn -b :$PORT app:app
