@@ -2,14 +2,14 @@ import React, {useState} from "react";
 import {DialogContent, DialogTitle, TextField, Dialog, Button} from "@mui/material";
 import axios from "axios";
 import {Input} from "@material-ui/core";
+import api from "./api"
 
 const AddTextDialog = (props) => {
     const [text, setText] = useState("");
     const [file, setFile] = useState(File.prototype);
 
     const handleSubmit = () => {
-        fetch('/api/ont_from_text', {
-            method: 'POST',
+        api.post('/api/ont_from_text', {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ const AddTextDialog = (props) => {
                 'Content-Type': 'multipart/form-data',
             }
         }
-        axios.post("/api/save_file", formData,config)
+        api.post("/api/save_file", formData,config)
                     .then(r => props.onClose());
     }
 

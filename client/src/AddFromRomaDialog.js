@@ -8,6 +8,7 @@ import {
     Autocomplete
 } from "@mui/material";
 import "./styles.css"
+import api from './api';
 
 const AddTextDialog = (props) => {
     const [ontId, setOntId] = useState(null);
@@ -15,7 +16,7 @@ const AddTextDialog = (props) => {
 
     useEffect(() => {
         let mounted = true;
-        fetch('/api/document/get_all_onts').then(data => data.json()).then(doc => {
+        api.get('/api/document/get_all_onts').then(data => data.data).then(doc => {
           if (mounted){
             setInfo(doc);
           }
@@ -24,7 +25,7 @@ const AddTextDialog = (props) => {
   }, [])
 
     const handleSubmit = () => {
-        fetch('/api/save_and_lem/' + ontId, {
+        api.get('/api/save_and_lem/' + ontId, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

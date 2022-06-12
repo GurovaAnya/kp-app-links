@@ -3,7 +3,7 @@ import cytoscape from 'cytoscape';
 import "./styles.css";
 import {useNavigate} from "react-router-dom";
 import {SideMenu} from "./SideMenu";
-
+import api from './api';
 
 export function Graph({showSideMenu}) {
     const cyto = useRef();
@@ -34,7 +34,7 @@ export function Graph({showSideMenu}) {
 
     useEffect(() => {
         let mounted = true;
-        fetch('/api/nodes').then(data => data.json()).then(items => {
+        api.get('/api/nodes').then(data => data.data).then(items => {
             if (mounted) {
                 console.log(items);
                 setGraph(items);

@@ -4,6 +4,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import {Button} from "@material-ui/core";
 import "./DocumentInfo.css"
 import axios from "axios";
+import api from "./api";
 
 const DocumentInfo = () => {
     const {id} = useParams();
@@ -17,7 +18,7 @@ const DocumentInfo = () => {
 
     useEffect(() => {
     let mounted = true;
-    fetch('/api/document/' + id).then(data => data.json()).then(doc => {
+    api.get('/api/document/' + id).then(data => data.data).then(doc => {
       if (mounted){
         setDocument(doc);
         console.log(doc);
@@ -111,7 +112,7 @@ const Highlighted = ({ text = "", start, end, id, name}) => {
     }
 
     const saveNewRelationIndexes = async () => {
-        await axios.post('/api/save_new_relation_indexes/' + id,
+        await api.post('/api/save_new_relation_indexes/' + id,
             {"start_index": startIdx, "end_index": endIdx} );
 
     }
